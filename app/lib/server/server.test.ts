@@ -247,19 +247,19 @@ test("a guest endpoint reads a valid login and treats anything else as a guest",
 
 test("refuses requests that another site sends", async () => {
   const from = (method: string, headers: Record<string, string>) =>
-    new Request("http://internal:10000/api", { method, headers: { host: "tourrific.example", ...headers } });
+    new Request("http://internal:10000/api", { method, headers: { host: "sayvoya.example", ...headers } });
 
-  assert.equal(isCrossSite(from("POST", { origin: "https://tourrific.example" })), false);
-  assert.equal(isCrossSite(from("DELETE", { origin: "https://tourrific.example" })), false);
+  assert.equal(isCrossSite(from("POST", { origin: "https://sayvoya.example" })), false);
+  assert.equal(isCrossSite(from("DELETE", { origin: "https://sayvoya.example" })), false);
   assert.equal(isCrossSite(from("POST", {})), false);
   assert.equal(
-    isCrossSite(from("POST", { host: "internal:10000", "x-forwarded-host": "tourrific.example", origin: "https://tourrific.example" })),
+    isCrossSite(from("POST", { host: "internal:10000", "x-forwarded-host": "sayvoya.example", origin: "https://sayvoya.example" })),
     false,
   );
   assert.equal(isCrossSite(from("POST", { host: "localhost:3000", origin: "http://localhost:3000" })), false);
   assert.equal(isCrossSite(from("POST", { host: "localhost:3000", origin: "http://localhost:4000" })), true);
 
-  for (const origin of ["https://evil.example", "https://tourrific.example.evil.example", "https://sub.tourrific.example", "null", ""]) {
+  for (const origin of ["https://evil.example", "https://sayvoya.example.evil.example", "https://sub.sayvoya.example", "null", ""]) {
     assert.equal(isCrossSite(from("POST", { origin })), true, origin);
     assert.equal(isCrossSite(from("DELETE", { origin })), true, origin);
     assert.equal(isCrossSite(from("GET", { origin })), false, origin);
@@ -273,7 +273,7 @@ test("refuses requests that another site sends", async () => {
   const refused = await route(from("POST", { origin: "https://evil.example" }));
   assert.equal(refused.status, 403);
   assert.equal(ran, 0);
-  assert.equal((await route(from("POST", { origin: "https://tourrific.example" }))).status, 200);
+  assert.equal((await route(from("POST", { origin: "https://sayvoya.example" }))).status, 200);
   assert.equal((await route(from("GET", { origin: "https://evil.example" }))).status, 200);
   assert.equal(ran, 2);
 });

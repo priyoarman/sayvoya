@@ -58,7 +58,7 @@ test("reads a message out of each backend error shape", () => {
 
 test("remembers who signed in, and never a token", () => {
   const user = { id: "42", name: "Ada", email: "a@example.com", currency: { code: "DKK" } };
-  const items = new Map([["tourrific.session", JSON.stringify({ token: "old.jwt.token", user })]]);
+  const items = new Map([["sayvoya.session", JSON.stringify({ token: "old.jwt.token", user })]]);
   (globalThis as { window?: unknown }).window = {
     localStorage: {
       getItem: (key: string) => items.get(key) ?? null,
@@ -68,12 +68,12 @@ test("remembers who signed in, and never a token", () => {
   };
 
   assert.deepEqual(getSession(), { user });
-  assert.equal(items.get("tourrific.session"), JSON.stringify({ user }));
+  assert.equal(items.get("sayvoya.session"), JSON.stringify({ user }));
 
   const other = { ...user, id: "7", email: "b@example.com" };
   setSession({ user: other });
   assert.deepEqual(getSession(), { user: other });
-  assert.equal(items.get("tourrific.session"), JSON.stringify({ user: other }));
+  assert.equal(items.get("sayvoya.session"), JSON.stringify({ user: other }));
 
   setSession(null);
   assert.equal(getSession(), null);

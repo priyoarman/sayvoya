@@ -26,9 +26,9 @@ const loadItinerary = cache(async (rawId: string) => {
 
 export async function generateMetadata(props: PageProps<"/itinerary/[id]">): Promise<Metadata> {
   const { view } = (await loadItinerary((await props.params).id)) ?? {};
-  if (!view) return { title: "Trip not found – Tourrific" };
+  if (!view) return { title: "Trip not found – Sayvoya" };
   return {
-    title: `${view.overview.title} – Tourrific`,
+    title: `${view.overview.title} – Sayvoya`,
     description: view.overview.description,
     robots: { index: false },
   };

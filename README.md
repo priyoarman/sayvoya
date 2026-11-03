@@ -1,17 +1,17 @@
-# Tourrific
+# Sayvoya
 
 Planning a trip usually means airport codes, date pickers and ten open tabs.
-Tourrific asks for one sentence instead:
+Sayvoya asks for one sentence instead:
 
 > "Direct flights from Copenhagen to London next Friday, with a checked bag, under 1500 kr."
 
 It reads that, finds real flights, and finds hotels for the same trip.
 
-**Try it:** [Tourrific live demo](https://tourrific-iowv.onrender.com/)
+**Try it:** [Sayvoya live demo](https://tourrific-iowv.onrender.com/)
 
 ## Where it came from
 
-Tourrific started as **TripWeave**, a team project at HackYourFuture Denmark.
+Sayvoya started as **TripWeave**, a team project at HackYourFuture Denmark.
 That first version was an Express API with an HTML, CSS and JavaScript
 frontend, built by four people:
 
@@ -26,7 +26,7 @@ frontend, built by four people:
 ### Then the project went solo
 
 [Arman Hossain](https://github.com/priyoarman)
-rewrote it in Next.js and TypeScript, gave it the Tourrific interface, and made
+rewrote it in Next.js and TypeScript, gave it the Sayvoya interface, and made
 the filters really work. The Groq prompt, the destination resolver, the
 follow-up handling and the database schema are ports of the team's work.
 

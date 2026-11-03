@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Tourrific - AI Travel Planner",
+  title: "Sayvoya - AI Travel Planner",
   description:
-    "Plan your next trip with Tourrific AI: personalised itineraries, flight deals and trip ideas in seconds.",
+    "Plan your next trip with Sayvoya AI: personalised itineraries, flight deals and trip ideas in seconds.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,7 +1,7 @@
 opencollection: 1.0.0
 
 info:
-  name: Tourrific
+  name: Sayvoya
   description: A travel planning application that helps users discover and organize their trips.
 config:
   proxy:

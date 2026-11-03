@@ -29,7 +29,7 @@ export default function ChatInput({ onSend, disabled }: Props) {
       className="rounded-[1.75rem] border border-lavender-soft bg-white px-5 pt-4 pb-3 shadow-[0_16px_40px_-16px_rgba(167,139,243,0.4)]"
     >
       <label htmlFor="chat-input" className="sr-only">
-        Message Tourrific AI
+        Message Sayvoya AI
       </label>
       <textarea
         id="chat-input"

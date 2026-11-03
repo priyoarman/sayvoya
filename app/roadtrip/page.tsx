@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import RoadTripView from "./_components/RoadTripView";
 
 export const metadata: Metadata = {
-  title: "Plan your road trip – Tourrific",
-  description: "Chat with Tourrific AI, map your route stop by stop and pick a place to stay each night.",
+  title: "Plan your road trip – Sayvoya",
+  description: "Chat with Sayvoya AI, map your route stop by stop and pick a place to stay each night.",
 };
 
 export default async function RoadTripPage(props: PageProps<"/roadtrip">) {

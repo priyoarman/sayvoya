@@ -14,7 +14,7 @@ export default function Footer() {
     <footer className="border-t border-lavender-soft bg-lavender-soft/30">
       <div className="mx-auto w-full max-w-278 px-5 py-10 text-center sm:px-10 sm:py-8">
         <p className="text-sm leading-relaxed text-ink-muted sm:text-base">
-          Tourrific is an AI travel planner built by{" "}
+          Sayvoya is an AI travel planner built by{" "}
           <a href="https://github.com/priyoarman" className={linkClass}>
             Arman Hossain
           </a>

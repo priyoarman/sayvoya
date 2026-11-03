@@ -6,7 +6,7 @@ export default function Logo({ className = "text-3xl sm:text-4xl" }: { className
       href="/"
       className={`flex items-center gap-1.5 font-bold tracking-tight text-ink ${className}`}
     >
-      Tourrific
+      Sayvoya
       <span aria-hidden className="text-[0.6em]">
         ✦
       </span>

@@ -88,7 +88,7 @@ function Form({ mode, note, noteIsAlert, onModeChange, onClose, onSignedIn }: Pr
       </button>
 
       <p className="text-sm font-bold tracking-tight text-ink">
-        Tourrific <span aria-hidden className="text-[0.7em]">✦</span>
+        Sayvoya <span aria-hidden className="text-[0.7em]">✦</span>
       </p>
       <h2 className="mt-3 text-3xl font-bold tracking-tight text-ink">{text.title}</h2>
       {note && noteIsAlert ? (

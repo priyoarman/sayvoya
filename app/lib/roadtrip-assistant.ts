@@ -64,5 +64,5 @@ export function replyToRoadTrip(message: string, ctx: { trip: RoadTrip; isFirst:
 }
 
 export function roadTripWelcome(trip: RoadTrip) {
-  return `Hi, I'm Tourrific AI ✦ Tell me where you'd like to drive, or what kind of scenery you're after.\nWhile you think, here's an idea: the **${trip.route.title}** through ${trip.route.region}.`;
+  return `Hi, I'm Sayvoya AI ✦ Tell me where you'd like to drive, or what kind of scenery you're after.\nWhile you think, here's an idea: the **${trip.route.title}** through ${trip.route.region}.`;
 }

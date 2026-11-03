@@ -9,7 +9,7 @@ export type AuthUser = {
 
 export type Session = { user: AuthUser };
 
-const STORAGE_KEY = "tourrific.session";
+const STORAGE_KEY = "sayvoya.session";
 
 let session: Session | null = null;
 let loaded = false;

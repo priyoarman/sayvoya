@@ -8,7 +8,7 @@ import { MAX_PROMPT_LENGTH } from "@/app/lib/limits";
 import { plannerHref } from "@/app/lib/routes";
 
 const EXAMPLE_PROMPT =
-  "Ask Tourrific AI to build the best 7-day beach vacation itinerary in Greece";
+  "Ask Sayvoya AI to build the best 7-day beach vacation itinerary in Greece";
 
 export default function PromptBox() {
   const [prompt, setPrompt] = useState("");

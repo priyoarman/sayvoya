@@ -28,7 +28,7 @@ const SEARCH_TIMEOUT_MS = 40_000;
 
 const WELCOME_ID = "welcome";
 const WELCOME =
-  "Hi, I'm Tourrific AI ✦ Tell me where and when you want to travel, and I'll find flights.";
+  "Hi, I'm Sayvoya AI ✦ Tell me where and when you want to travel, and I'll find flights.";
 const TIMEOUT_MESSAGE =
   "The server is taking too long to respond (possibly due to AI limits). Please try again in a moment.";
 const CONNECTION_MESSAGE =
