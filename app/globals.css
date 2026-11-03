@@ -36,6 +36,6 @@
 }
 
 body {
-  background: linear-gradient(180deg, #f8f5ff 0%, #f3edfd 100%);
+  background: #f3edfd linear-gradient(180deg, #f8f5ff 0%, #f3edfd 100%) no-repeat;
   color: var(--foreground);
 }

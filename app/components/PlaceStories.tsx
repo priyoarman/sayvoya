@@ -103,7 +103,7 @@ export default function PlaceStories() {
   return (
     <section
       id="places"
-      className="relative mx-auto w-full max-w-312 px-5 pt-10 pb-20 sm:px-10 sm:pt-14 sm:pb-28"
+      className="relative mx-auto w-full max-w-278 px-5 pt-10 pb-20 sm:px-10 sm:pt-14 sm:pb-28"
     >
       <div className="text-center">
         <h2 className="text-3xl font-bold tracking-tight text-ink sm:text-[3.5rem] sm:leading-tight">

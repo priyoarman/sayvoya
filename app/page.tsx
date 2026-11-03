@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import DestinationCards from "./components/DestinationCards";
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import PromptBox from "./components/PromptBox";
 import PlaceStories from "./components/PlaceStories";
@@ -58,6 +59,7 @@ export default function Home() {
       </div>
 
       <PlaceStories />
+      <Footer />
     </div>
   );
 }

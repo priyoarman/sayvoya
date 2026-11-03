@@ -55,7 +55,7 @@ export default function Header() {
         </ul>
 
         <div className="hidden items-center gap-1 rounded-xl border border-lavender-soft bg-white/80 px-2 py-2.5 text-base font-medium text-ink sm:flex">
-          {["kr", "EN", "°C"].map((option) => (
+          {["€", "EN", "°C"].map((option) => (
             <button
               key={option}
               type="button"
