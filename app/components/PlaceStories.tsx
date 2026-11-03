@@ -114,23 +114,23 @@ export default function PlaceStories() {
         </p>
       </div>
 
-      <ul className="mt-8 grid gap-5 sm:mt-12 sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-8 lg:grid-cols-3">
         {places.map((place) => (
           <li
             key={place.name}
-            className="group relative overflow-hidden rounded-[1.75rem] bg-white shadow-[0_16px_40px_-16px_rgba(42,27,61,0.3)] transition-transform hover:-translate-y-1"
+            className="group relative overflow-hidden rounded-[1.25rem] bg-white shadow-[0_16px_40px_-16px_rgba(42,27,61,0.3)] transition-transform hover:-translate-y-1 sm:rounded-[1.75rem]"
           >
-            <div className="relative h-44 bg-ink sm:h-60">
+            <div className="relative h-28 bg-ink sm:h-60">
               <Image
                 src={place.photo}
                 alt=""
                 fill
-                sizes="(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 400px, 50vw"
                 className="object-cover"
               />
             </div>
-            <div className="px-6 pt-5 pb-7">
-              <h3 className="text-2xl font-semibold text-ink">
+            <div className="px-3 pt-3 pb-4 sm:px-6 sm:pt-5 sm:pb-7">
+              <h3 className="text-lg font-semibold text-ink sm:text-2xl">
                 <Link
                   href={destinationHref(place.searchName ?? place.name)}
                   className="after:absolute after:inset-0"
@@ -138,21 +138,21 @@ export default function PlaceStories() {
                   {place.name}
                 </Link>
               </h3>
-              <p className="mt-1 text-base text-ink-muted">{place.tagline}</p>
+              <p className="mt-1 text-xs text-ink-muted sm:text-base">{place.tagline}</p>
 
-              <dl className="mt-4 grid grid-cols-2 gap-4 border-y border-ink/10 py-3">
+              <dl className="mt-3 grid grid-cols-2 gap-2 border-y border-ink/10 py-2 sm:mt-4 sm:gap-4 sm:py-3">
                 {place.facts.map((fact) => (
                   <div key={fact.label}>
-                    <dt className="text-sm text-ink-muted">{fact.label}</dt>
-                    <dd className="text-lg font-semibold text-ink">{fact.value}</dd>
+                    <dt className="text-xs text-ink-muted sm:text-sm">{fact.label}</dt>
+                    <dd className="text-base font-semibold text-ink sm:text-lg">{fact.value}</dd>
                   </div>
                 ))}
               </dl>
 
-              <ul className="mt-4 space-y-2">
+              <ul className="mt-3 space-y-1.5 sm:mt-4 sm:space-y-2">
                 {place.events.map((event) => (
-                  <li key={event.year} className="flex gap-3 text-sm text-ink">
-                    <span className="w-10 shrink-0 font-semibold tabular-nums">{event.year}</span>
+                  <li key={event.year} className="flex gap-2 text-xs text-ink sm:gap-3 sm:text-sm">
+                    <span className="w-8 shrink-0 font-semibold tabular-nums sm:w-10">{event.year}</span>
                     <span>{event.text}</span>
                   </li>
                 ))}
