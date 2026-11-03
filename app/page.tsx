@@ -3,7 +3,7 @@ import Link from "next/link";
 import DestinationCards from "./components/DestinationCards";
 import Header from "./components/Header";
 import PromptBox from "./components/PromptBox";
-import TripsTailored from "./components/TripsTailored";
+import PlaceStories from "./components/PlaceStories";
 import { plannerHref } from "@/app/lib/routes";
 
 const quickActions = [
@@ -57,7 +57,7 @@ export default function Home() {
         </main>
       </div>
 
-      <TripsTailored />
+      <PlaceStories />
     </div>
   );
 }

@@ -7,7 +7,7 @@ import Logo from "./ui/Logo";
 
 const navLinks = [
   { label: "Destinations", href: "#destinations" },
-  { label: "Occasions", href: "#trips" },
+  { label: "Places", href: "#places" },
 ];
 
 const navItemClass = "text-lg font-medium text-ink transition-colors hover:text-lavender";
