@@ -7,7 +7,7 @@ Sayvoya asks for one sentence instead:
 
 It reads that, finds real flights, and finds hotels for the same trip.
 
-**Try it:** [Sayvoya live demo](https://tourrific-iowv.onrender.com/)
+**Try it:** [Sayvoya live demo](https://sayvoya.onrender.com/)
 
 ## Where it came from
 
@@ -70,8 +70,8 @@ The road trip page shows sample data for now.
 You need Node.js 22 or newer, npm and a PostgreSQL database.
 
 ```bash
-git clone https://github.com/priyoarman/tourrific.git
-cd tourrific
+git clone https://github.com/priyoarman/sayvoya.git
+cd sayvoya
 npm install
 cp .env.example .env.local   # then fill in the values
 npm run db:deploy            # creates the tables
