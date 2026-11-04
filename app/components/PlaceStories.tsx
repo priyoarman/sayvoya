@@ -118,7 +118,7 @@ export default function PlaceStories() {
         {places.map((place) => (
           <li
             key={place.name}
-            className="group relative overflow-hidden rounded-[1.25rem] bg-white shadow-[0_16px_40px_-16px_rgba(42,27,61,0.3)] transition-transform hover:-translate-y-1 sm:rounded-[1.75rem]"
+            className="group relative overflow-hidden rounded-[1.25rem] bg-white shadow-[0_16px_40px_-16px_rgba(42,27,61,0.3)] transition-transform hover:-translate-y-1 focus-within:-translate-y-1 sm:rounded-[1.75rem]"
           >
             <div className="relative h-28 bg-ink sm:h-60">
               <Image

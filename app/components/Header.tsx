@@ -54,17 +54,14 @@ export default function Header() {
           </li>
         </ul>
 
-        <div className="hidden items-center gap-1 rounded-xl border border-lavender-soft bg-white/80 px-2 py-2.5 text-base font-medium text-ink sm:flex">
+        <p className="hidden items-center divide-x divide-lavender-soft text-lg font-medium text-ink-muted sm:flex">
           {["€", "EN", "°C"].map((option) => (
-            <button
-              key={option}
-              type="button"
-              className="rounded-lg px-2.5 transition-colors hover:text-lavender"
-            >
+            <span key={option} aria-hidden className="px-2.5">
               {option}
-            </button>
+            </span>
           ))}
-        </div>
+          <span className="sr-only">Prices in euros, text in English, temperatures in Celsius</span>
+        </p>
 
         <button
           type="button"

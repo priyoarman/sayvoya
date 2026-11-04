@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpIcon, MicIcon, PaperclipIcon } from "@/app/components/ui/Icons";
+import { ArrowUpIcon } from "@/app/components/ui/Icons";
 import PromptLimitNotice from "@/app/components/ui/PromptLimitNotice";
 import { MAX_PROMPT_LENGTH } from "@/app/lib/limits";
 
@@ -48,25 +48,9 @@ export default function ChatInput({ onSend, disabled }: Props) {
       />
       <div className="mt-1 flex items-center justify-between gap-2">
         <div className="flex min-w-0 items-center gap-2">
-          <button
-            type="button"
-            aria-label="Attach a file"
-            onClick={() => alert("Attachments are coming soon.")}
-            className="shrink-0 rounded-full p-2 text-ink transition-colors hover:bg-lavender-soft/50"
-          >
-            <PaperclipIcon size={22} />
-          </button>
           <PromptLimitNotice length={text.length} />
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <button
-            type="button"
-            aria-label="Voice input"
-            onClick={() => alert("Voice input is coming soon.")}
-            className="rounded-full p-2 text-ink transition-colors hover:bg-lavender-soft/50"
-          >
-            <MicIcon size={22} />
-          </button>
           <button
             type="submit"
             disabled={!canSend}
