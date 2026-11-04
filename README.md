@@ -30,7 +30,7 @@ rewrote it in Next.js and TypeScript, gave it the Sayvoya interface, and made
 the filters really work. The Groq prompt, the destination resolver, the
 follow-up handling and the database schema are ports of the team's work.
 
-- Original version: [abikrithika/trip-weave](https://github.com/abikrithika/trip-weave/master), and this repository's history before the migration
+- Original version: [abikrithika/trip-weave](https://github.com/abikrithika/trip-weave/tree/master), and this repository's history before the migration
 - Original project board: <https://trello.com/b/2veKRbtH/trip-weave>
 
 ## What it can do

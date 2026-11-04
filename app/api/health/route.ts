@@ -1,7 +1,7 @@
 export function GET() {
   return Response.json({
     ok: true,
-    service: "trip-weave-api",
+    service: "sayvoya-api",
     routes: ["/api/flights/search-stream"],
   });
 }

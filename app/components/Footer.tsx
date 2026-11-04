@@ -18,11 +18,11 @@ export default function Footer() {
           <a href="https://github.com/priyoarman" className={linkClass}>
             Arman Hossain
           </a>
-          . It started as TripWeave, portfolio project at HackYourFuture Denmark.
+          . It started as TripWeave, a team project at HackYourFuture Denmark.
         </p>
         <p className="mt-2 text-sm leading-relaxed text-ink-muted sm:text-base">
           © {new Date().getFullYear()} Arman Hossain ·{" "}
-          <a href="https://github.com/priyoarman/trip-weave" className={linkClass}>
+          <a href="https://github.com/priyoarman/sayvoya" className={linkClass}>
             Source code on GitHub
           </a>
         </p>
