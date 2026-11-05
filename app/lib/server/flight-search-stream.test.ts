@@ -72,3 +72,18 @@ test("asks where to go when the only wish is a vibe Sayvoya doesn't know", async
   assert.equal(eventNamed(events, "complete"), undefined);
   assert.deepEqual(eventNamed(events, "done"), { needsInput: true, asking: "destination" });
 });
+
+test("asks for the date when the AI read a date that does not exist", async () => {
+  stubProviders({ origin_airport: "CPH", destination_airport: "LIS", departure_date: "2099-02-30" });
+  const realWarn = console.warn;
+  console.warn = () => {};
+
+  try {
+    const events = await search("Lisbon, please");
+
+    assert.equal(eventNamed(events, "complete"), undefined);
+    assert.equal(eventNamed(events, "done")?.asking, "departure_date");
+  } finally {
+    console.warn = realWarn;
+  }
+});

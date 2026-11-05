@@ -3,6 +3,7 @@ import { createGroq } from "@ai-sdk/groq";
 import type { CabinClass, DepartureTime, HotelAmenity, StayUnit, TripQuery, TripType } from "../../types/trip-query";
 import { resolveDestination, resolveDestinationAirportInput } from "../destination-resolver.ts";
 import TRIP_QUERY_SCHEMA from "./schema.ts";
+import { modelTripQuerySchema } from "./trip-query-schema.ts";
 import SYSTEM_PROMPT from "./system-prompt.ts";
 
 const DEFAULT_MODEL = "openai/gpt-oss-20b";
@@ -417,6 +418,7 @@ export async function extractTripQuery(userText: string, opts: Options = {}): Pr
   // airport code. Turn those into airport codes now; a place that is no airport becomes null.
   parsed.origin_airport = resolveDestinationAirportInput(parsed.origin_airport);
   parsed.destination_airport = resolveDestinationAirportInput(parsed.destination_airport);
+  dropInvalidFields(parsed);
 
   if (localDates.departure_date) parsed.departure_date = localDates.departure_date;
   if (localDates.return_date) parsed.return_date = localDates.return_date;
@@ -433,6 +435,17 @@ export async function extractTripQuery(userText: string, opts: Options = {}): Pr
   }
 
   return { ok: true, parsed, errors: [] };
+}
+
+// A field the AI got wrong becomes null, which means "the user didn't say": the app then asks
+// for it or uses its default, instead of searching with it. The other fields are kept.
+function dropInvalidFields(parsed: TripQuery) {
+  const fields = modelTripQuerySchema.shape;
+  for (const key of Object.keys(fields) as (keyof typeof fields)[]) {
+    if (fields[key].safeParse(parsed[key]).success) continue;
+    console.warn(`AI returned an invalid ${key}; ignoring it.`);
+    (parsed as Record<keyof typeof fields, unknown>)[key] = null;
+  }
 }
 
 function retryAfterMs(error: unknown) {

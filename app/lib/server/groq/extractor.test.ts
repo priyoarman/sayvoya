@@ -265,3 +265,67 @@ test("an unknown airport still leaves room for the country the AI read", async (
   assert.match(parsed.destination_airport!, /^[A-Z]{3}$/);
   assert.match(parsed.explanation!, /\*\*Spain\*\*/);
 });
+
+async function extractWithWarnings(query: Record<string, unknown>) {
+  const warnings: string[] = [];
+  const realWarn = console.warn;
+  console.warn = (message: string) => warnings.push(message);
+  try {
+    return { parsed: await extractWhenGroqReads(query), warnings };
+  } finally {
+    console.warn = realWarn;
+  }
+}
+
+test("drops a date from the AI that is not a real calendar date", async () => {
+  const { parsed, warnings } = await extractWithWarnings({
+    destination_airport: "LIS",
+    departure_date: "July 10",
+    return_date: "2026-02-30",
+  });
+  assert.equal(parsed.departure_date, null);
+  assert.equal(parsed.return_date, null);
+  assert.equal(parsed.destination_airport, "LIS");
+  assert.deepEqual(warnings, [
+    "AI returned an invalid departure_date; ignoring it.",
+    "AI returned an invalid return_date; ignoring it.",
+  ]);
+});
+
+test("drops only the fields the AI got wrong and keeps the rest", async () => {
+  const { parsed } = await extractWithWarnings({
+    destination_airport: "LIS",
+    departure_date: "2026-12-12",
+    passengers: 2,
+    cabin_class: "business",
+    destination_country_code: "SPAIN",
+    destination_continent_code: "EUROPE",
+    destination_area: "x".repeat(101),
+  });
+  assert.equal(parsed.destination_country_code, null);
+  assert.equal(parsed.destination_continent_code, null);
+  assert.equal(parsed.destination_area, null);
+  assert.equal(parsed.destination_airport, "LIS");
+  assert.equal(parsed.departure_date, "2026-12-12");
+  assert.equal(parsed.passengers, 2);
+  assert.equal(parsed.cabin_class, "business");
+});
+
+test("logs only the field name, never what the user or the AI wrote", async () => {
+  const { warnings } = await extractWithWarnings({ departure_date: "my birthday in Lisbon" });
+  assert.deepEqual(warnings, ["AI returned an invalid departure_date; ignoring it."]);
+});
+
+test("a valid answer from the AI passes without warnings", async () => {
+  const { parsed, warnings } = await extractWithWarnings({
+    origin_airport: "CPH",
+    destination_airport: "FCO",
+    departure_date: "2026-12-12",
+    return_date: "2026-12-19",
+    passengers: 2,
+    destination_country_code: "IT",
+    destination_continent_code: "EU",
+  });
+  assert.deepEqual(warnings, []);
+  assert.equal(parsed.return_date, "2026-12-19");
+});
