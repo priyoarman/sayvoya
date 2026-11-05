@@ -44,7 +44,7 @@ export default function ItineraryLoading() {
       <div aria-hidden className="flex flex-col gap-5">
         <header className="grid grid-cols-[auto_1fr] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
           <Logo className="text-2xl sm:text-3xl" />
-          <div className={`${bar} order-last col-span-2 h-9 w-full lg:order-none lg:col-span-1 lg:w-96`} />
+          <div className={`${bar} order-last col-span-2 h-9 w-full lg:order-0 lg:col-span-1 lg:w-96`} />
           <div className="flex items-center justify-end gap-3">
             <div className={`${bar} h-9 w-9 sm:w-28`} />
             <div className={`${bar} h-9 w-9 sm:w-22`} />

@@ -8,6 +8,7 @@ import { getTrip, parseTripId, tripForViewer } from "@/app/lib/server/trips";
 import BudgetCard from "../_components/BudgetCard";
 import EmailTripButton from "../_components/EmailTripButton";
 import HotelStayCard from "../_components/HotelStayCard";
+import NoHotelCard from "../_components/NoHotelCard";
 import PlanHeader from "../_components/PlanHeader";
 import ReturnFlightCard from "../_components/ReturnFlightCard";
 import SaveTripButton from "../_components/SaveTripButton";
@@ -55,20 +56,18 @@ export default async function TripItineraryPage(props: PageProps<"/itinerary/[id
         }
       />
 
-      <main className="grid flex-1 items-start gap-5 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-[auto_1fr] xl:items-stretch">
+      <main className="grid flex-1 content-start items-start gap-5 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-[auto_1fr] xl:content-normal xl:items-stretch">
         <Cell className="xl:col-start-1 xl:row-span-2 xl:row-start-1">
           <TripOverviewCard trip={view.overview} />
         </Cell>
 
-        <Cell className={`xl:col-start-2 xl:row-start-1 ${view.hotel ? "" : "xl:row-span-2"}`}>
+        <Cell className="xl:col-start-2 xl:row-start-1">
           <ReturnFlightCard flight={view.flight} />
         </Cell>
 
-        {view.hotel && (
-          <Cell className="xl:col-start-2 xl:row-start-2">
-            <HotelStayCard hotel={view.hotel} />
-          </Cell>
-        )}
+        <Cell className="xl:col-start-2 xl:row-start-2">
+          {view.hotel ? <HotelStayCard hotel={view.hotel} /> : <NoHotelCard />}
+        </Cell>
 
         <Cell className={`xl:col-start-3 xl:row-start-1 ${view.budget ? "" : "xl:row-span-2"}`}>
           <TripCalendarCard calendar={view.calendar} plan={null} />

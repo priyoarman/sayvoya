@@ -10,7 +10,7 @@ export default function BudgetCard({ budget: { lines, days, currency } }: Props)
   const share = (amount: number) => Math.round((amount / total) * 100);
 
   return (
-    <section className={`${cardClass} flex-1 p-5`}>
+    <section className={`${cardClass} flex flex-col p-5`}>
       <div className="flex items-center justify-between">
         <h2 className="text-sm text-ink-muted">Total budget</h2>
         <button
@@ -21,27 +21,29 @@ export default function BudgetCard({ budget: { lines, days, currency } }: Props)
         </button>
       </div>
 
-      <p className="mt-4 flex items-baseline gap-3">
-        <span className="text-5xl font-bold tracking-tight text-ink">{price(total)}</span>
+      <p className="mt-2 flex items-baseline gap-3">
+        <span className="text-4xl font-bold tracking-tight text-ink">{price(total)}</span>
         <span className="text-xs text-ink-subtle">≈ {price(Math.round(total / days))} / day</span>
       </p>
 
-      <div aria-hidden className="mt-4 flex h-2.5 gap-0.5 overflow-hidden rounded-full">
-        {lines.map((line) => (
-          <span key={line.label} className={line.color} style={{ width: `${share(line.amount)}%` }} />
-        ))}
-      </div>
+      <div className="mt-auto pt-4">
+        <div aria-hidden className="flex h-2 gap-0.5 overflow-hidden rounded-full">
+          {lines.map((line) => (
+            <span key={line.label} className={line.color} style={{ width: `${share(line.amount)}%` }} />
+          ))}
+        </div>
 
-      <ul className="mt-5 space-y-4 text-sm">
-        {lines.map((line) => (
-          <li key={line.label} className="flex items-center gap-3">
-            <span aria-hidden className={`size-2 rounded-full ${line.color}`} />
-            <span className="text-ink">{line.label}</span>
-            <span className="ml-auto font-bold text-ink">{price(line.amount)}</span>
-            <span className="w-8 text-right text-xs text-ink-subtle">{share(line.amount)}%</span>
-          </li>
-        ))}
-      </ul>
+        <ul className="mt-3 space-y-2 text-sm">
+          {lines.map((line) => (
+            <li key={line.label} className="flex items-center gap-3">
+              <span aria-hidden className={`size-2 rounded-full ${line.color}`} />
+              <span className="text-ink">{line.label}</span>
+              <span className="ml-auto font-bold text-ink">{price(line.amount)}</span>
+              <span className="w-8 text-right text-xs text-ink-subtle">{share(line.amount)}%</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

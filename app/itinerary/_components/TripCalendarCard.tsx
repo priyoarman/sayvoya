@@ -49,15 +49,15 @@ export default function TripCalendarCard({ calendar, plan }: Props) {
         </div>
       }
     >
-      <div className="mt-3 grid grid-cols-7 text-center text-xs text-ink-muted">
+      <div className="mt-2 grid grid-cols-7 text-center text-xs text-ink-muted">
         {WEEKDAYS.map((weekday) => (
-          <span key={weekday} className="py-1">
+          <span key={weekday} className="py-0.5">
             {weekday}
           </span>
         ))}
       </div>
 
-      <ol className="mt-1 grid grid-cols-7 gap-y-0.5 text-center text-sm font-medium">
+      <ol className="mt-0.5 grid grid-cols-7 gap-y-0.5 text-center text-sm font-medium">
         {monthCells(year, month).map(({ day, date, inMonth }, index) => {
           const isEnd = date === start || date === end;
           const inTrip = date > start && date < end;
@@ -65,7 +65,7 @@ export default function TripCalendarCard({ calendar, plan }: Props) {
           return (
             <li
               key={index}
-              className={`relative flex h-9 items-center justify-center ${
+              className={`relative flex h-8 items-center justify-center ${
                 isEnd
                   ? "rounded-xl bg-iris font-bold text-white"
                   : inTrip
