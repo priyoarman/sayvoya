@@ -118,6 +118,13 @@ export default function RoadTripView({ initialPrompt, today }: Props) {
 
   return (
     <div className="flex h-dvh flex-col">
+      <p
+        role="note"
+        className="flex-none border-b border-amber-300 bg-amber-50 px-4 py-2 text-center text-sm text-amber-900"
+      >
+        <strong className="font-semibold">Preview:</strong> routes, stops and hotels here are sample data, not real
+        availability or prices, and the chat replies are scripted.
+      </p>
       <MobileTabs
         active={tab}
         onChange={setTab}
@@ -146,6 +153,7 @@ export default function RoadTripView({ initialPrompt, today }: Props) {
             subtitle={staySummary(activeStop.city, activeStop.arriveDate, activeStop.leaveDate, activeStop.nights)}
             nights={activeStop.nights}
             hotels={hotels}
+            sample
             sort={hotelSort}
             onSortChange={setHotelSort}
             selectedId={stays[activeStop.id]?.id ?? null}

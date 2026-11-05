@@ -3,7 +3,7 @@ import RoadTripView from "./_components/RoadTripView";
 
 export const metadata: Metadata = {
   title: "Plan your road trip – Sayvoya",
-  description: "Chat with Sayvoya AI, map your route stop by stop and pick a place to stay each night.",
+  description: "Preview with sample data: map a road trip stop by stop and pick a place to stay each night.",
 };
 
 export default async function RoadTripPage(props: PageProps<"/roadtrip">) {
