@@ -10,7 +10,7 @@ export default function BudgetCard({ budget: { lines, days, currency } }: Props)
   const share = (amount: number) => Math.round((amount / total) * 100);
 
   return (
-    <section className={`${cardClass} flex flex-col p-5`}>
+    <section className={`${cardClass} p-5`}>
       <div className="flex items-center justify-between">
         <h2 className="text-sm text-ink-muted">Total budget</h2>
         <button
@@ -26,7 +26,7 @@ export default function BudgetCard({ budget: { lines, days, currency } }: Props)
         <span className="text-xs text-ink-subtle">≈ {price(Math.round(total / days))} / day</span>
       </p>
 
-      <div className="mt-auto pt-4">
+      <div className="mt-4">
         <div aria-hidden className="flex h-2 gap-0.5 overflow-hidden rounded-full">
           {lines.map((line) => (
             <span key={line.label} className={line.color} style={{ width: `${share(line.amount)}%` }} />

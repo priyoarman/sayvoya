@@ -56,7 +56,7 @@ export default async function TripItineraryPage(props: PageProps<"/itinerary/[id
         }
       />
 
-      <main className="grid flex-1 content-start items-start gap-5 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-[auto_1fr] xl:content-normal xl:items-stretch">
+      <main className="grid flex-1 content-start items-start gap-5 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-[1fr_auto] xl:content-normal xl:items-stretch">
         <Cell className="xl:col-start-1 xl:row-span-2 xl:row-start-1">
           <TripOverviewCard trip={view.overview} />
         </Cell>

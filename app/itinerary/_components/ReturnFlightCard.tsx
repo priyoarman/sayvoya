@@ -7,6 +7,7 @@ type Props = { flight: FlightView };
 export default function ReturnFlightCard({ flight: { title, price, legs } }: Props) {
   return (
     <SectionCard
+      className="flex flex-col"
       icon={<PlaneIcon size={17} fill="none" stroke="currentColor" strokeWidth="1.8" className="rotate-45" />}
       title={title}
       aside={
@@ -15,9 +16,9 @@ export default function ReturnFlightCard({ flight: { title, price, legs } }: Pro
         </span>
       }
     >
-      <ul className="mt-4 space-y-3">
+      <ul className="mt-4 flex flex-1 flex-col gap-3">
         {legs.map((leg) => (
-          <li key={leg.label} className="rounded-2xl bg-lavender-soft/45 px-4 py-3">
+          <li key={leg.label} className="flex flex-1 flex-col justify-center rounded-2xl bg-lavender-soft/45 px-4 py-3">
             <div className="flex items-center gap-3 text-sm">
               <span className="rounded-full bg-iris px-3 py-1 text-xs font-semibold text-white">
                 {leg.label}

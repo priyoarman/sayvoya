@@ -37,6 +37,7 @@ export default function TripCalendarCard({ calendar, plan }: Props) {
 
   return (
     <SectionCard
+      className="flex flex-col"
       title={title}
       aside={
         <div className="flex gap-2.5">
@@ -57,7 +58,7 @@ export default function TripCalendarCard({ calendar, plan }: Props) {
         ))}
       </div>
 
-      <ol className="mt-0.5 grid grid-cols-7 gap-y-0.5 text-center text-sm font-medium">
+      <ol className="mt-0.5 grid max-h-72 flex-1 grid-cols-7 content-around gap-y-0.5 text-center text-sm font-medium">
         {monthCells(year, month).map(({ day, date, inMonth }, index) => {
           const isEnd = date === start || date === end;
           const inTrip = date > start && date < end;
