@@ -5,6 +5,12 @@ import { resolveDestinationAirportInput } from "./destination-resolver.ts";
 test("finds the airport for a city name or an airport code", () => {
   assert.equal(resolveDestinationAirportInput("Paris"), "CDG");
   assert.equal(resolveDestinationAirportInput("BER"), "BER");
+  assert.equal(resolveDestinationAirportInput("Sao Paulo"), "GRU");
+});
+
+test("finds an airport by a word in its name", () => {
+  assert.equal(resolveDestinationAirportInput("Heathrow"), "LHR");
+  assert.equal(resolveDestinationAirportInput("Billund"), "BLL");
 });
 
 // Known bugs: these give an airport far away (HSA in Kazakhstan, SID in Cape Verde, TOS in Tromsø).
@@ -22,7 +28,7 @@ for (const [code, airport] of cityCodes) {
   });
 }
 
-test("finds no airport for a vague place", { todo: true }, () => {
+test("finds no airport for a vague place", () => {
   assert.equal(resolveDestinationAirportInput("SOMEWHERE WARM"), null);
   assert.equal(resolveDestinationAirportInput("GO SOMEWHERE WARM IN DECEMBER"), null);
 });

@@ -91,30 +91,35 @@ function pickBestAirport(candidates: Airport[]) {
   return ranked[0]?.iata_code?.toUpperCase() || null;
 }
 
+const hasWords = (text: string, words: string) => ` ${text} `.includes(` ${words} `);
+
 function findAirportByNameOrCity(value: string) {
   const normalized = normalizeLocationName(value);
   if (!normalized) return null;
 
   if (DESTINATION_ALIASES[normalized]) return DESTINATION_ALIASES[normalized];
 
-  const candidates = airports.filter((airport) => {
-    if (!airport.iata_code || airport.scheduled_service !== "yes") return false;
+  const scheduled = airports
+    .filter((airport) => airport.iata_code && airport.scheduled_service === "yes")
+    .map((airport) => ({
+      airport,
+      municipality: normalizeLocationName(airport.municipality),
+      airportName: normalizeLocationName(airport.name),
+    }));
 
-    const municipality = normalizeLocationName(airport.municipality);
-    const airportName = normalizeLocationName(airport.name);
-    if (!municipality) return airportName === normalized;
+  const exact = scheduled.filter(({ municipality, airportName }) => municipality === normalized || airportName === normalized);
+  if (exact.length > 0) return pickBestAirport(exact.map(({ airport }) => airport));
 
-    return (
-      municipality === normalized ||
-      airportName === normalized ||
-      municipality.includes(normalized) ||
-      normalized.includes(municipality) ||
-      airportName.includes(normalized) ||
-      normalized.includes(airportName)
-    );
-  });
+  const byWords = scheduled.filter(
+    ({ municipality, airportName }) =>
+      municipality !== "" &&
+      (hasWords(municipality, normalized) ||
+        hasWords(normalized, municipality) ||
+        hasWords(airportName, normalized) ||
+        hasWords(normalized, airportName)),
+  );
 
-  return pickBestAirport(candidates);
+  return pickBestAirport(byWords.map(({ airport }) => airport));
 }
 
 export function resolveDestinationAirportInput(value: string | null | undefined) {
