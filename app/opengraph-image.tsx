@@ -2,9 +2,6 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
-// The picture shown when a Sayvoya link is shared on LinkedIn, Slack, email and so on.
-// Built once at build time. Pages without their own image use this one.
-
 export const alt = "Sayvoya: plan a trip in one sentence. AI finds real flights and hotels for you.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
@@ -131,7 +128,6 @@ export default function Image() {
   );
 }
 
-// Drawn as shapes: the fonts don't include the ✦ and ➤ characters used on the site.
 function Sparkle() {
   return (
     <svg width="26" height="26" viewBox="0 0 24 24">

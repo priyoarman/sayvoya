@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   title: "Sayvoya - AI Travel Planner",
   description:
     "Plan your next trip with Sayvoya AI: personalised itineraries, flight deals and trip ideas in seconds.",
-  // No title or description here: each page's own title and description fill them in.
   openGraph: {
     siteName: "Sayvoya",
     type: "website",
@@ -23,7 +22,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
   },
   authors: [{ name: "Arman Hossain", url: "https://github.com/priyoarman" }],
-  // LinkedIn reads the publish date from this tag. The date Sayvoya went live under its new name.
   other: {
     publish_date: "2026-11-04T00:00:00+01:00",
   },
