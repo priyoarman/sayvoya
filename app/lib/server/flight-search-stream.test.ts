@@ -63,3 +63,12 @@ test("asks where to go instead of guessing a place from the words after 'to'", a
   assert.equal(eventNamed(events, "complete"), undefined);
   assert.deepEqual(eventNamed(events, "done"), { needsInput: true, asking: "destination" });
 });
+
+test("asks where to go when the only wish is a vibe Sayvoya doesn't know", async () => {
+  stubProviders({ origin_airport: "CPH", destination_airport: null, departure_date: "2099-01-05", vibe_tags: ["warm"] });
+
+  const events = await search("Somewhere warm on 5 January 2099");
+
+  assert.equal(eventNamed(events, "complete"), undefined);
+  assert.deepEqual(eventNamed(events, "done"), { needsInput: true, asking: "destination" });
+});

@@ -248,6 +248,10 @@ export function resolveDestination(tripQuery: DestinationHints): Resolution {
     }
   }
 
+  if (vibeAirports.length === 0 && !countryCode && !continentCode && !area) {
+    return { destination_airport: null, explanation: null };
+  }
+
   if (vibeAirports.length > 0) {
     const intersected = candidates.filter((a) => vibeAirports.includes(a.iata_code));
     if (intersected.length > 0) candidates = intersected;
