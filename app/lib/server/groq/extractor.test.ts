@@ -134,22 +134,31 @@ test("works out relative dates from a Monday", () => {
   assert.equal(september.return_date, null);
 });
 
-// Known bug: the weekday or "tomorrow" guess replaces a date the user typed out in full.
-// With a Monday as today, "Friday, December 12" becomes Friday 10 July. When the user typed an
-// exact date, the parser should return nothing, so the date the model read is kept.
-// Each test is marked todo until the fix lands, so CI stays green while the bug is still visible.
+// The weekday or "tomorrow" guess used to replace a date the user typed out in full:
+// with a Monday as today, "Friday, December 12" became Friday 10 July. When the user typed an
+// exact date, the parser returns nothing, so the date the model read is kept.
 const typedDates = [
   "Fly to Rome on Friday, December 12",
   "Rome on Saturday the 14th of November",
   "Barcelona 2026-12-12 to 2026-12-19, back Sunday",
   "Lisbon on Friday 11/12",
+  "Oslo on Friday 11.12.2026",
 ];
 
 for (const text of typedDates) {
-  test(`keeps the typed date in "${text}"`, { todo: true }, () => {
+  test(`keeps the typed date in "${text}"`, () => {
     assert.deepEqual(parseNaturalTravelDates(text, new Date(2026, 6, 6)), { departure_date: null, return_date: null });
   });
 }
+
+test("still reads a relative date next to numbers that are not dates", () => {
+  const date = (text: string) => parseNaturalTravelDates(text, new Date(2026, 6, 6)).departure_date;
+
+  assert.equal(date("Paris tomorrow for 5 nights"), "2026-07-07");
+  assert.equal(date("Leaving tomorrow at 7.30"), "2026-07-07");
+  assert.equal(date("Friday, 2 adults, max 1500 kr"), "2026-07-10");
+  assert.equal(date("Beaches next weekend, 3 nights, under 500 euros"), "2026-07-18");
+});
 
 test("finds how long the stay is in the message", () => {
   const stay = (text: string) => {

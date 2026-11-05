@@ -197,8 +197,26 @@ function futureDateInMonth(monthIndex: number, year: number, referenceDate: Date
 
 type TravelDates = { departure_date: string | null; return_date: string | null };
 
+const MONTH = "jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?";
+const DAY = "\\d{1,2}(?:st|nd|rd|th)?";
+const EXACT_DATE = new RegExp(
+  [
+    "\\b\\d{4}-\\d{1,2}-\\d{1,2}\\b", // 2026-12-12
+    "\\b\\d{1,2}/\\d{1,2}(?:/\\d{2,4})?\\b", // 11/12, 11/12/2026
+    "\\b\\d{1,2}[.-]\\d{1,2}[.-]\\d{2,4}\\b", // 11.12.2026 (not 7.30, which is a time)
+    `\\b${DAY}\\s+(?:of\\s+)?(?:${MONTH})\\b`, // 12 December, 14th of Nov
+    `\\b(?:${MONTH})\\s+${DAY}\\b`, // December 12, Dec 12th
+    "\\b\\d{1,2}(?:st|nd|rd|th)\\b", // the 14th
+  ].join("|"),
+  "i",
+);
+
+function mentionsExactDate(text: string) {
+  return EXACT_DATE.test(text);
+}
+
 export function parseNaturalTravelDates(text: unknown, referenceDate = new Date()): TravelDates {
-  if (typeof text !== "string" || text.trim() === "") {
+  if (typeof text !== "string" || text.trim() === "" || mentionsExactDate(text)) {
     return { departure_date: null, return_date: null };
   }
 
