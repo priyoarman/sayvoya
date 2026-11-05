@@ -68,7 +68,31 @@ const DESTINATION_ALIASES: Record<string, string> = {
   "ATHENS": "ATH",
   "ISTANBUL": "IST",
   "LISBON": "LIS",
-  "COPENHAGEN": "CPH"
+  "COPENHAGEN": "CPH",
+  "BANGKOK": "BKK",
+
+  // City codes that cover several airports. They are not airports themselves, so pick the main one.
+  "NYC": "JFK",
+  "LON": "LHR",
+  "PAR": "CDG",
+  "MIL": "MXP",
+  "STO": "ARN",
+  "ROM": "FCO",
+  "TYO": "HND",
+  "OSA": "KIX",
+  "SEL": "ICN",
+  "BJS": "PEK",
+  "JKT": "CGK",
+  "CHI": "ORD",
+  "WAS": "IAD",
+  "YTO": "YYZ",
+  "YMQ": "YUL",
+  "BUE": "EZE",
+  "RIO": "GIG",
+  "SAO": "GRU",
+  "MOW": "SVO",
+  "BUH": "OTP",
+  "REK": "KEF"
 };
 
 function normalizeLocationName(value: string | null | undefined) {

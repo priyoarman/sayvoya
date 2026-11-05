@@ -13,20 +13,24 @@ test("finds an airport by a word in its name", () => {
   assert.equal(resolveDestinationAirportInput("Billund"), "BLL");
 });
 
-// Known bugs: these give an airport far away (HSA in Kazakhstan, SID in Cape Verde, TOS in Tromsø).
-// Each test is marked todo until the fix lands, so CI stays green while the bug is still visible.
+// These used to give an airport far away (HSA in Kazakhstan, SID in Cape Verde, TOS in Tromsø).
 const cityCodes: [code: string, airport: string][] = [
   ["NYC", "JFK"],
   ["PAR", "CDG"],
   ["ROM", "FCO"],
   ["LON", "LHR"],
+  ["nyc", "JFK"],
 ];
 
 for (const [code, airport] of cityCodes) {
-  test(`finds ${airport} for the city code ${code}`, { todo: true }, () => {
+  test(`finds ${airport} for the city code ${code}`, () => {
     assert.equal(resolveDestinationAirportInput(code), airport);
   });
 }
+
+test("finds the main airport of a city with two big airports", () => {
+  assert.equal(resolveDestinationAirportInput("Bangkok"), "BKK");
+});
 
 test("finds no airport for a vague place", () => {
   assert.equal(resolveDestinationAirportInput("SOMEWHERE WARM"), null);
