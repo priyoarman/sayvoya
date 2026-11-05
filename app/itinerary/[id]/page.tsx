@@ -55,9 +55,6 @@ export default async function TripItineraryPage(props: PageProps<"/itinerary/[id
         }
       />
 
-      {/* From xl up, the cards sit in a 3 × 2 grid that fills the rest of the screen, and every card
-          stretches to fill its cell, so the bottom edges line up. A card spans both rows when the
-          card that would sit under it is missing. Below xl, the cards simply stack. */}
       <main className="grid flex-1 items-start gap-5 lg:grid-cols-2 xl:grid-cols-3 xl:grid-rows-[auto_1fr] xl:items-stretch">
         <Cell className="xl:col-start-1 xl:row-span-2 xl:row-start-1">
           <TripOverviewCard trip={view.overview} />
@@ -87,7 +84,6 @@ export default async function TripItineraryPage(props: PageProps<"/itinerary/[id
   );
 }
 
-/** A grid cell whose card stretches to the cell's full height (a one-item grid stretches its child). */
 function Cell({ className, children }: { className: string; children: ReactNode }) {
   return <div className={`grid min-w-0 ${className}`}>{children}</div>;
 }

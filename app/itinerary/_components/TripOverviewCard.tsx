@@ -6,8 +6,8 @@ type Props = { trip: OverviewView };
 
 export default function TripOverviewCard({ trip }: Props) {
   return (
-    <section className={`${cardClass} p-4`}>
-      <div className="relative h-48 overflow-hidden rounded-2xl">
+    <section className={`${cardClass} flex flex-col p-4`}>
+      <div className="relative min-h-48 flex-1 overflow-hidden rounded-2xl">
         <TripImage image={trip.image} />
       </div>
 
@@ -27,17 +27,6 @@ export default function TripOverviewCard({ trip }: Props) {
             </li>
           ))}
         </ul>
-
-        <dl className="mt-4 grid grid-cols-3 gap-3 border-t border-lavender-soft/70 pt-3.5">
-          {trip.facts.map((fact) => (
-            <div key={fact.label}>
-              <dt className="text-[0.65rem] font-semibold tracking-widest text-ink-subtle uppercase">
-                {fact.label}
-              </dt>
-              <dd className="mt-1.5 text-sm font-semibold text-ink">{fact.value}</dd>
-            </div>
-          ))}
-        </dl>
       </div>
     </section>
   );

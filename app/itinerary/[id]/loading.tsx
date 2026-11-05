@@ -59,13 +59,9 @@ export default function ItineraryLoading() {
               <div className={`${bar} mt-4 h-6 w-48`} />
               <div className={`${bar} mt-2 h-3 w-full`} />
               <div className={`${bar} mt-1.5 h-3 w-2/3`} />
-              <div className="mt-4 grid grid-cols-3 gap-3 border-t border-lavender-soft/70 pt-3.5">
-                {[0, 1, 2].map((i) => (
-                  <div key={i} className="space-y-1.5">
-                    <div className={`${bar} h-3 w-12`} />
-                    <div className={`${bar} h-4 w-16`} />
-                  </div>
-                ))}
+              <div className="mt-4 flex gap-2">
+                <div className={`${bar} h-6 w-16`} />
+                <div className={`${bar} h-6 w-20`} />
               </div>
             </div>
 

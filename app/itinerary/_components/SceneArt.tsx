@@ -8,11 +8,12 @@ export default function SceneArt({ scene, className = "" }: Props) {
   const sky = `${id}-sky`;
   const sea = `${id}-sea`;
   const skyStops = SKIES[scene];
+  const island = scene === "island";
 
   return (
     <svg
-      viewBox={scene === "island" ? "0 0 240 100" : "0 0 240 200"}
-      preserveAspectRatio="xMidYMid slice"
+      viewBox={island ? "0 0 240 100" : "0 0 240 200"}
+      preserveAspectRatio={island ? "xMidYMid meet" : "xMidYMid slice"}
       aria-hidden
       className={`block size-full ${className}`}
     >
@@ -28,11 +29,13 @@ export default function SceneArt({ scene, className = "" }: Props) {
       </defs>
       <rect width="240" height="200" fill={`url(#${sky})`} />
 
-      {scene === "island" && (
+      {island && (
         <>
+          <rect x="-240" y="-400" width="720" height="401" fill={skyStops[0]} />
+          <rect x="-240" width="720" height="64" fill={`url(#${sky})`} />
           <circle cx="197" cy="30" r="19" fill="#fde68a" opacity="0.5" />
           <circle cx="197" cy="30" r="13" fill="#fbbf24" />
-          <path d="M-10 70c40-18 110-22 170-12 34 5 60 6 90 3v20H-10z" fill="#f1dcae" />
+          <path d="M-250 70H-10c40-18 110-22 170-12 34 5 60 6 90 3H490v20H-250z" fill="#f1dcae" />
           <g fill="#fff">
             <rect x="36" y="50" width="12" height="14" rx="1" />
             <rect x="49" y="43" width="12" height="21" rx="1" />
@@ -43,7 +46,8 @@ export default function SceneArt({ scene, className = "" }: Props) {
           </g>
           <path d="M48.5 44a6.5 6.5 0 0 1 13 0z" fill="#3b5bdb" />
           <rect x="53.5" y="50" width="3" height="7" rx="1.5" fill="#3b5bdb" />
-          <rect y="64" width="240" height="140" fill={`url(#${sea})`} />
+          <rect x="-240" y="64" width="720" height="140" fill={`url(#${sea})`} />
+          <rect x="-240" y="203" width="720" height="400" fill="#1b7fb8" />
           <path d="M94 80h14l-2.5 4h-9zM101 68v10h-6zM102.5 71v7h4.5z" fill="#fff" />
           <path d="M22 76h22M150 84h26M52 90h18" stroke="#fff" strokeLinecap="round" opacity="0.7" />
         </>

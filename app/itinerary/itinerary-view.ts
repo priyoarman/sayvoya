@@ -19,7 +19,6 @@ export type OverviewView = {
   airportCode: string;
   description: string;
   chips: string[];
-  facts: { label: string; value: string }[];
   image: ImageView;
 };
 
@@ -139,11 +138,6 @@ export function toItineraryView(
         : hotel
           ? ["One way", `${formatNights(stay.nights)} at the hotel`, travellers]
           : ["One way", travellers],
-      facts: [
-        { label: "Dates", value: roundTrip ? dates : `From ${formatDate(stay.checkIn)}` },
-        { label: "Route", value: `${flight.outbound.origin} ${roundTrip ? "⇄" : "→"} ${destination}` },
-        { label: "Stay", value: city },
-      ],
       image: { photoUrl: hotel?.photoUrl ?? null, scene: "island" },
     },
     budget:

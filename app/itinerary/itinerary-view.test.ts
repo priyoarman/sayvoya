@@ -30,11 +30,6 @@ test("sums up a round trip", () => {
     "4 nights in Lisbon at Casa do Rio, flying Scandinavian Airlines from Copenhagen.",
   );
   assert.deepEqual(view.overview.chips, ["5 days", "4 nights", "1 traveller"]);
-  assert.deepEqual(view.overview.facts, [
-    { label: "Dates", value: "12 – 16 Nov 2026" },
-    { label: "Route", value: "CPH ⇄ LIS" },
-    { label: "Stay", value: "Lisbon" },
-  ]);
   assert.deepEqual(view.overview.image, { photoUrl: hotel().photoUrl, scene: "island" });
 });
 
@@ -120,8 +115,6 @@ test("doesn't pretend a one-way trip has a known length", () => {
   const view = toItineraryView(oneWay(), options);
   assert.deepEqual(view.summary, ["Lisbon trip", "One way", "Thu 12 Nov"]);
   assert.deepEqual(view.overview.chips, ["One way", "3 nights at the hotel", "1 traveller"]);
-  assert.equal(view.overview.facts[0].value, "From Thu 12 Nov");
-  assert.equal(view.overview.facts[1].value, "CPH → LIS");
   assert.equal(view.flight.title, "Flight");
   assert.equal(view.flight.price, "€412.50 · one way");
   assert.equal(view.flight.legs.length, 1);
