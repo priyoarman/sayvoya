@@ -1,10 +1,11 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { ArrowLeftIcon } from "@/app/components/ui/Icons";
 import Logo from "@/app/components/ui/Logo";
 
-type Props = { summary: string[]; initials: string | null };
+type Props = { summary: string[]; actions?: ReactNode };
 
-export default function PlanHeader({ summary, initials }: Props) {
+export default function PlanHeader({ summary, actions }: Props) {
   return (
     <header className="grid grid-cols-[auto_1fr] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
       <Logo className="text-2xl sm:text-3xl" />
@@ -18,19 +19,15 @@ export default function PlanHeader({ summary, initials }: Props) {
         ))}
       </p>
 
-      <div className="flex items-center justify-end gap-5">
+      <div className="flex items-center justify-end gap-2.5 sm:gap-3">
+        {actions}
         <Link
           href="/"
-          className="flex items-center gap-2 text-sm font-medium text-ink-muted transition-colors hover:text-ink"
+          className="ml-2 flex items-center gap-2 text-sm font-medium whitespace-nowrap text-ink-muted transition-colors hover:text-ink"
         >
           <ArrowLeftIcon size={15} />
           New trip
         </Link>
-        {initials && (
-          <span className="flex size-10 items-center justify-center rounded-full bg-ink text-xs font-bold text-white">
-            {initials}
-          </span>
-        )}
       </div>
     </header>
   );

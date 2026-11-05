@@ -44,21 +44,19 @@ export default async function TripItineraryPage(props: PageProps<"/itinerary/[id
   const canSave = !(viewer && owner === "someone-else");
 
   return (
-    <div className="mx-auto flex w-full max-w-400 flex-1 flex-col gap-5 px-5 pt-6 pb-5 sm:px-7 sm:zoom-[0.9]">
-      <PlanHeader summary={view.summary} initials={null} />
+    <div className="mx-auto flex w-full max-w-400 flex-1 flex-col gap-5 px-5 pt-6 pb-5 sm:px-7">
+      <PlanHeader
+        summary={view.summary}
+        actions={
+          <>
+            {canSave && <SaveTripButton tripId={itinerary.trip.id} saved={owner === "you" && savedAt !== null} />}
+            <EmailTripButton />
+          </>
+        }
+      />
 
       <main className="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
         <div className="flex flex-col gap-5">
-          <div className="flex items-start gap-3">
-            {canSave && (
-              <div className="min-w-0 flex-1">
-                <SaveTripButton tripId={itinerary.trip.id} saved={owner === "you" && savedAt !== null} />
-              </div>
-            )}
-            <div className="min-w-0 flex-1">
-              <EmailTripButton />
-            </div>
-          </div>
           <TripOverviewCard trip={view.overview} />
           {view.budget && <BudgetCard budget={view.budget} />}
         </div>

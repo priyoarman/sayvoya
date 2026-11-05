@@ -37,7 +37,7 @@ export default function ItineraryLoading() {
   return (
     <div
       role="status"
-      className="mx-auto flex w-full max-w-400 flex-1 flex-col gap-5 px-5 pt-6 pb-5 sm:px-7 sm:zoom-[0.9]"
+      className="mx-auto flex w-full max-w-400 flex-1 flex-col gap-5 px-5 pt-6 pb-5 sm:px-7"
     >
       <span className="sr-only">Loading your itinerary…</span>
 
@@ -45,18 +45,15 @@ export default function ItineraryLoading() {
         <header className="grid grid-cols-[auto_1fr] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]">
           <Logo className="text-2xl sm:text-3xl" />
           <div className={`${bar} order-last col-span-2 h-9 w-full lg:order-none lg:col-span-1 lg:w-96`} />
-          <div className="flex items-center justify-end gap-5">
-            <div className={`${bar} h-4 w-20`} />
+          <div className="flex items-center justify-end gap-3">
+            <div className={`${bar} h-9 w-9 sm:w-28`} />
+            <div className={`${bar} h-9 w-9 sm:w-22`} />
+            <div className={`${bar} ml-2 h-4 w-20`} />
           </div>
         </header>
 
         <div className="grid animate-pulse gap-5 motion-reduce:animate-none lg:grid-cols-2 xl:grid-cols-3">
           <div className="flex flex-col gap-5">
-            <div className="flex gap-3">
-              <div className={`${bar} h-13 flex-1`} />
-              <div className={`${bar} h-13 flex-1`} />
-            </div>
-
             <div className={`${cardClass} p-5`}>
               <div className={`${block} h-48`} />
               <div className={`${bar} mt-4 h-6 w-48`} />

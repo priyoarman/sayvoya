@@ -13,7 +13,7 @@ type Props = {
 };
 
 const buttonClass =
-  "flex w-full items-center justify-center gap-2.5 rounded-full py-4 text-sm font-semibold transition-colors";
+  "flex items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold whitespace-nowrap transition-colors";
 
 export default function SaveTripButton({ tripId, saved: savedBefore }: Props) {
   const { requireSignIn } = useAccount();
@@ -43,14 +43,14 @@ export default function SaveTripButton({ tripId, saved: savedBefore }: Props) {
   if (status === "saved") {
     return (
       <p className={`${buttonClass} bg-emerald-100 text-emerald-800`}>
-        <CheckIcon size={16} />
-        Saved to your trips
+        <CheckIcon size={15} />
+        <span className="max-sm:sr-only">Saved</span>
       </p>
     );
   }
 
   return (
-    <div>
+    <div className="relative">
       <button
         type="button"
         onClick={save}
@@ -58,11 +58,15 @@ export default function SaveTripButton({ tripId, saved: savedBefore }: Props) {
         aria-describedby={error ? "save-trip-error" : undefined}
         className={`${buttonClass} bg-iris text-white hover:bg-iris/90 disabled:bg-iris/70`}
       >
-        <BookmarkIcon size={16} />
-        {status === "saving" ? "Saving…" : "Save trip"}
+        <BookmarkIcon size={15} />
+        <span className="max-sm:sr-only">{status === "saving" ? "Saving…" : "Save trip"}</span>
       </button>
       {error && (
-        <p id="save-trip-error" role="alert" className="mt-3 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-800">
+        <p
+          id="save-trip-error"
+          role="alert"
+          className="absolute top-full right-0 z-10 mt-2 w-72 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-800 shadow-lg"
+        >
           {error}
         </p>
       )}

@@ -19,12 +19,12 @@ export default function EmailTripButton() {
       <button
         type="button"
         onClick={() => setNoteShown(true)}
-        className="flex w-full items-center justify-center gap-2.5 rounded-full bg-lavender-soft py-4 text-sm font-semibold text-ink transition-colors hover:bg-lavender"
+        className="flex items-center justify-center gap-2 rounded-full bg-lavender-soft px-4 py-2 text-sm font-semibold whitespace-nowrap text-ink transition-colors hover:bg-lavender"
       >
-        <MailIcon size={16} />
-        Send by email
+        <MailIcon size={15} />
+        <span className="max-sm:sr-only">Email</span>
       </button>
-      <p role="status" className="pointer-events-none absolute top-full left-1/2 z-10 mt-2 -translate-x-1/2">
+      <p role="status" className="pointer-events-none absolute top-full right-0 z-10 mt-2">
         {noteShown && (
           <span className="block rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap text-white shadow-lg">
             Sending by email is coming soon
