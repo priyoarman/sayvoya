@@ -94,6 +94,7 @@ test("adds up the budget", () => {
   assert.deepEqual(toItineraryView(trip(), options).budget, {
     currency: "EUR",
     days: 5,
+    estimate: false,
     lines: [
       { label: "Flights", amount: 412.5, color: "bg-iris" },
       { label: "Hotel", amount: 480, color: "bg-lavender" },
@@ -119,7 +120,16 @@ test("doesn't pretend a one-way trip has a known length", () => {
   assert.equal(view.flight.price, "€412.50 · one way");
   assert.equal(view.flight.legs.length, 1);
   assert.equal(view.hotel?.price, "€120 a night");
-  assert.equal(view.budget, null);
+  assert.deepEqual(view.budget, {
+    currency: "EUR",
+    days: null,
+    estimate: true,
+    lines: [
+      { label: "Flights", amount: 412.5, color: "bg-iris" },
+      { label: "Hotel · 3 nights", amount: 360, color: "bg-lavender" },
+    ],
+  });
+  assert.equal(view.calendar.end, "2026-11-15");
 });
 
 test("leaves the hotel out of a trip without one", () => {
@@ -133,6 +143,10 @@ test("leaves the hotel out of a trip without one", () => {
   const oneWayAlone = toItineraryView({ ...oneWay(), hotel: null }, options);
   assert.deepEqual(oneWayAlone.overview.chips, ["One way", "1 traveller"]);
   assert.deepEqual(oneWayAlone.budget?.lines, [{ label: "Flights", amount: 412.5, color: "bg-iris" }]);
+  assert.equal(oneWayAlone.budget?.days, null);
+  assert.equal(oneWayAlone.budget?.estimate, false);
+  assert.equal(oneWayAlone.calendar.start, "2026-11-12");
+  assert.equal(oneWayAlone.calendar.end, "2026-11-12");
 });
 
 test("counts travellers", () => {

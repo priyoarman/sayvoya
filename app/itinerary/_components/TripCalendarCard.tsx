@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@/app/components/ui/Icons";
 import type { CalendarView, PlanView } from "../itinerary-view";
 import SectionCard, { arrowClass } from "./SectionCard";
@@ -25,10 +28,15 @@ function monthCells(year: number, month: number): Cell[] {
   return Array.from({ length: leading + daysInMonth + trailing }, (_, i) => cell(i - leading + 1));
 }
 
+const monthIndex = (date: string) => Number(date.slice(0, 4)) * 12 + Number(date.slice(5, 7)) - 1;
+
 export default function TripCalendarCard({ calendar, plan }: Props) {
   const { start, end, today, activityDates } = calendar;
-  const year = Number(start.slice(0, 4));
-  const month = Number(start.slice(5, 7));
+  const firstMonth = monthIndex(start);
+  const lastShift = monthIndex(end) - firstMonth;
+  const [shift, setShift] = useState(0);
+  const year = Math.floor((firstMonth + shift) / 12);
+  const month = ((firstMonth + shift) % 12) + 1;
   const title = new Date(Date.UTC(year, month - 1, 1)).toLocaleDateString("en-GB", {
     month: "long",
     year: "numeric",
@@ -40,14 +48,28 @@ export default function TripCalendarCard({ calendar, plan }: Props) {
       className="flex flex-col"
       title={title}
       aside={
-        <div className="flex gap-2.5">
-          <button type="button" aria-label="Previous month" disabled className={arrowClass}>
-            <ChevronLeftIcon size={15} />
-          </button>
-          <button type="button" aria-label="Next month" className={arrowClass}>
-            <ChevronRightIcon size={15} />
-          </button>
-        </div>
+        lastShift > 0 && (
+          <div className="flex gap-2.5">
+            <button
+              type="button"
+              aria-label="Previous month"
+              disabled={shift === 0}
+              onClick={() => setShift(shift - 1)}
+              className={arrowClass}
+            >
+              <ChevronLeftIcon size={15} />
+            </button>
+            <button
+              type="button"
+              aria-label="Next month"
+              disabled={shift === lastShift}
+              onClick={() => setShift(shift + 1)}
+              className={arrowClass}
+            >
+              <ChevronRightIcon size={15} />
+            </button>
+          </div>
+        )
       }
     >
       <div className="mt-2 grid grid-cols-7 text-center text-xs text-ink-muted">

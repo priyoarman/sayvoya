@@ -4,26 +4,21 @@ import { cardClass } from "./SectionCard";
 
 type Props = { budget: BudgetView };
 
-export default function BudgetCard({ budget: { lines, days, currency } }: Props) {
+export default function BudgetCard({ budget: { lines, days, estimate, currency } }: Props) {
   const price = (amount: number) => formatPrice(amount, currency);
   const total = lines.reduce((sum, line) => sum + line.amount, 0);
   const share = (amount: number) => Math.round((amount / total) * 100);
 
   return (
     <section className={`${cardClass} p-5`}>
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm text-ink-muted">Total budget</h2>
-        <button
-          type="button"
-          className="rounded-full bg-lavender-soft/60 px-3.5 py-1.5 text-xs font-semibold text-ink transition-colors hover:bg-lavender-soft"
-        >
-          Details
-        </button>
-      </div>
+      <h2 className="text-sm text-ink-muted">{estimate ? "Estimated budget" : "Total budget"}</h2>
 
       <p className="mt-2 flex items-baseline gap-3">
-        <span className="text-4xl font-bold tracking-tight text-ink">{price(total)}</span>
-        <span className="text-xs text-ink-subtle">≈ {price(Math.round(total / days))} / day</span>
+        <span className="text-4xl font-bold tracking-tight text-ink">
+          {estimate && "≈ "}
+          {price(total)}
+        </span>
+        {days !== null && <span className="text-xs text-ink-subtle">≈ {price(Math.round(total / days))} / day</span>}
       </p>
 
       <div className="mt-4">

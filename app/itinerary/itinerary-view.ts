@@ -7,7 +7,6 @@ import {
   formatPrice,
   formatTime,
 } from "../lib/format.ts";
-import { tripTotal } from "../lib/trip-total.ts";
 import type { FlightSlice, Hotel, PickedTrip } from "../lib/types";
 
 export type Scene = "island" | "temple" | "lake" | "beach";
@@ -30,7 +29,8 @@ export type BudgetLine = {
 
 export type BudgetView = {
   currency: string;
-  days: number;
+  days: number | null;
+  estimate: boolean;
   lines: BudgetLine[];
 };
 
@@ -118,7 +118,6 @@ export function toItineraryView(
   const dates = formatDateRange(stay.checkIn, stay.checkOut);
   const days = stay.nights + 1;
   const travellers = plural(stay.guests, "traveller");
-  const total = tripTotal(flight, hotel, stay);
   const description = hotel
     ? roundTrip
       ? `${formatNights(stay.nights)} in ${city} at ${hotel.name}, flying ${flight.airline.name} from ${originCity}.`
@@ -141,14 +140,23 @@ export function toItineraryView(
       image: { photoUrl: hotel?.photoUrl ?? null, scene: "island" },
     },
     budget:
-      total === null
+      hotel && hotel.currency !== flight.currency
         ? null
         : {
             currency: flight.currency,
-            days,
+            days: stay.nightsAssumed ? null : days,
+            estimate: stay.nightsAssumed && hotel !== null,
             lines: [
               { label: "Flights", amount: flight.totalPrice, color: "bg-iris" },
-              ...(hotel ? [{ label: "Hotel", amount: hotel.nightlyPrice * stay.nights, color: "bg-lavender" }] : []),
+              ...(hotel
+                ? [
+                    {
+                      label: stay.nightsAssumed ? `Hotel · ${formatNights(stay.nights)}` : "Hotel",
+                      amount: hotel.nightlyPrice * stay.nights,
+                      color: "bg-lavender",
+                    },
+                  ]
+                : []),
             ],
           },
     flight: {
@@ -160,7 +168,7 @@ export function toItineraryView(
       ],
     },
     hotel: hotel && hotelView(hotel, stay, city, sample),
-    calendar: { start: stay.checkIn, end: stay.checkOut, today, activityDates: [] },
+    calendar: { start: stay.checkIn, end: hotel || roundTrip ? stay.checkOut : stay.checkIn, today, activityDates: [] },
   };
 }
 
