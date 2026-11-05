@@ -134,6 +134,23 @@ test("works out relative dates from a Monday", () => {
   assert.equal(september.return_date, null);
 });
 
+// Known bug: the weekday or "tomorrow" guess replaces a date the user typed out in full.
+// With a Monday as today, "Friday, December 12" becomes Friday 10 July. When the user typed an
+// exact date, the parser should return nothing, so the date the model read is kept.
+// Each test is marked todo until the fix lands, so CI stays green while the bug is still visible.
+const typedDates = [
+  "Fly to Rome on Friday, December 12",
+  "Rome on Saturday the 14th of November",
+  "Barcelona 2026-12-12 to 2026-12-19, back Sunday",
+  "Lisbon on Friday 11/12",
+];
+
+for (const text of typedDates) {
+  test(`keeps the typed date in "${text}"`, { todo: true }, () => {
+    assert.deepEqual(parseNaturalTravelDates(text, new Date(2026, 6, 6)), { departure_date: null, return_date: null });
+  });
+}
+
 test("finds how long the stay is in the message", () => {
   const stay = (text: string) => {
     const { stay_length, stay_unit } = parseStayLength(text);
