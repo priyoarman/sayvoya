@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
-import { test } from "node:test";
-import { asksForWayBack, normalizeTripQuery, parseNaturalTravelDates, parseStayLength, saysOneWay } from "./extractor.ts";
+import { afterEach, test } from "node:test";
+import {
+  asksForWayBack,
+  extractTripQuery,
+  normalizeTripQuery,
+  parseNaturalTravelDates,
+  parseStayLength,
+  saysOneWay,
+} from "./extractor.ts";
 
 test("cleans a one-way search", () => {
   const oneWay = normalizeTripQuery({
@@ -205,4 +212,56 @@ test("finds a way back declined", () => {
   assert.equal(saysOneWay("no return needed"), true);
   assert.equal(saysOneWay("Flights to Lisbon next Friday"), false);
   assert.equal(saysOneWay('Previous flight search JSON: {"trip_type":"one_way"}'), false);
+});
+
+const realFetch = globalThis.fetch;
+afterEach(() => {
+  globalThis.fetch = realFetch;
+});
+
+async function extractWhenGroqReads(query: Record<string, unknown>) {
+  process.env.GROQ_API_KEY = "test";
+  globalThis.fetch = (() =>
+    Promise.resolve(
+      Response.json({
+        id: "x",
+        model: "test",
+        choices: [{ index: 0, finish_reason: "stop", message: { role: "assistant", content: JSON.stringify(query) } }],
+        usage: { prompt_tokens: 1, completion_tokens: 1, total_tokens: 2 },
+      }),
+    )) as typeof fetch;
+
+  const result = await extractTripQuery("a trip", { referenceDate: new Date(2026, 6, 6) });
+  assert.equal(result.ok, true);
+  return result.parsed!;
+}
+
+test("turns place names from the AI into airport codes", async () => {
+  const parsed = await extractWhenGroqReads({ origin_airport: "Copenhagen", destination_airport: "Paris" });
+  assert.equal(parsed.origin_airport, "CPH");
+  assert.equal(parsed.destination_airport, "CDG");
+});
+
+test("turns city codes from the AI into airport codes", async () => {
+  const parsed = await extractWhenGroqReads({ origin_airport: "LON", destination_airport: "NYC" });
+  assert.equal(parsed.origin_airport, "LHR");
+  assert.equal(parsed.destination_airport, "JFK");
+});
+
+test("keeps airport codes from the AI as they are", async () => {
+  const parsed = await extractWhenGroqReads({ origin_airport: "aal", destination_airport: "BER" });
+  assert.equal(parsed.origin_airport, "AAL");
+  assert.equal(parsed.destination_airport, "BER");
+});
+
+test("drops a place from the AI that is no airport", async () => {
+  const parsed = await extractWhenGroqReads({ origin_airport: "XYZ", destination_airport: "Somewhere warm" });
+  assert.equal(parsed.origin_airport, null);
+  assert.equal(parsed.destination_airport, null);
+});
+
+test("an unknown airport still leaves room for the country the AI read", async () => {
+  const parsed = await extractWhenGroqReads({ destination_airport: "Costa del Nada", destination_country_code: "ES", destination_continent_code: "EU" });
+  assert.match(parsed.destination_airport!, /^[A-Z]{3}$/);
+  assert.match(parsed.explanation!, /\*\*Spain\*\*/);
 });

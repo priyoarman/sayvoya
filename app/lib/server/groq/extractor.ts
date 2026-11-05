@@ -1,7 +1,7 @@
 import { setTimeout as sleep } from "node:timers/promises";
 import { createGroq } from "@ai-sdk/groq";
 import type { CabinClass, DepartureTime, HotelAmenity, StayUnit, TripQuery, TripType } from "../../types/trip-query";
-import { resolveDestination } from "../destination-resolver.ts";
+import { resolveDestination, resolveDestinationAirportInput } from "../destination-resolver.ts";
 import TRIP_QUERY_SCHEMA from "./schema.ts";
 import SYSTEM_PROMPT from "./system-prompt.ts";
 
@@ -412,6 +412,11 @@ export async function extractTripQuery(userText: string, opts: Options = {}): Pr
   }
 
   const parsed = normalizeTripQuery(raw);
+
+  // The AI sometimes names a place ("PARIS", "COPENHAGEN") or a city code ("LON") instead of an
+  // airport code. Turn those into airport codes now; a place that is no airport becomes null.
+  parsed.origin_airport = resolveDestinationAirportInput(parsed.origin_airport);
+  parsed.destination_airport = resolveDestinationAirportInput(parsed.destination_airport);
 
   if (localDates.departure_date) parsed.departure_date = localDates.departure_date;
   if (localDates.return_date) parsed.return_date = localDates.return_date;
