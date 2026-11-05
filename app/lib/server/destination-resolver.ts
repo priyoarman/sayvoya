@@ -102,6 +102,7 @@ function findAirportByNameOrCity(value: string) {
 
     const municipality = normalizeLocationName(airport.municipality);
     const airportName = normalizeLocationName(airport.name);
+    if (!municipality) return airportName === normalized;
 
     return (
       municipality === normalized ||
