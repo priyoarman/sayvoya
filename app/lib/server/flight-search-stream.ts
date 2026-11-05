@@ -180,11 +180,6 @@ export async function runFlightSearch(body: unknown, headers: Headers, send: Sen
     }
 
     if (!extracted.destination_airport) {
-      const match = userPrompt.match(/to\s+([a-zA-Z\s]+)/i);
-      if (match?.[1]) extracted.destination_airport = match[1].trim().toUpperCase();
-    }
-
-    if (!extracted.destination_airport) {
       const resolved = resolveDestination(extracted);
       if (resolved.destination_airport) {
         extracted.destination_airport = resolved.destination_airport;
