@@ -167,9 +167,9 @@ Protected routes need the `session` cookie that logging in sets.
 | `POST /api/trips/:id/save` | yes | Save a trip. A guest's trip becomes yours |
 | `GET /api/trips` | yes | List your saved trips |
 | `DELETE /api/trips/:id` | yes | Delete one of your trips |
-| `POST /api/groq/extract` | yes | Test: show the search Groq extracts |
-| `POST /api/flights/search` | yes | Test: search Duffel directly |
-| `POST /api/flights/ai-search` | yes | Test: extract and search without streaming |
+| `POST /api/groq/extract` | yes | Dev only (404 in production): show the search Groq extracts |
+| `POST /api/flights/search` | yes | Dev only (404 in production): search Duffel directly |
+| `POST /api/flights/ai-search` | yes | Dev only (404 in production): extract and search without streaming |
 
 **Try it.** `postman/` and `bruno/` hold the same 20 requests, pointed at
 `http://localhost:3000`. Run **Sign up** once, then **Log in**. Both tools keep

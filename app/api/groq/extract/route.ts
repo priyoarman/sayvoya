@@ -5,6 +5,8 @@ import { isPlainObject } from "@/app/lib/server/follow-up";
 import { detectFallbackOrigin } from "@/app/lib/server/origin-fallback";
 
 export const POST = handle(async (request: Request) => {
+  if (process.env.NODE_ENV === "production") return Response.json({ success: false, message: "Not found" }, { status: 404 });
+
   const user = requireUser(request);
   if (user instanceof Response) return user;
 

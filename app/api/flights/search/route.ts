@@ -4,6 +4,8 @@ import { handle, readJson } from "@/app/lib/server/http";
 import { searchFlightsSchema } from "@/app/lib/server/schemas";
 
 export const POST = handle(async (request: Request) => {
+  if (process.env.NODE_ENV === "production") return Response.json({ success: false, message: "Not found" }, { status: 404 });
+
   const user = requireUser(request);
   if (user instanceof Response) return user;
 

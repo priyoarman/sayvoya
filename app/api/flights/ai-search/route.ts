@@ -18,6 +18,8 @@ function buildDuffelSearchPayload(tripQuery: TripQuery): DuffelSearchPayload {
 }
 
 export const POST = handle(async (request: NextRequest) => {
+  if (process.env.NODE_ENV === "production") return Response.json({ success: false, message: "Not found" }, { status: 404 });
+
   const user = requireUser(request);
   if (user instanceof Response) return user;
 
