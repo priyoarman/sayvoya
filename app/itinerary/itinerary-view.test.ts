@@ -82,7 +82,7 @@ test("names the airport when its city isn't known", () => {
 });
 
 test("describes the hotel without inventing its hours", () => {
-  const { hotel: view } = toItineraryView(trip(), options);
+  const view = toItineraryView(trip(), options).hotel!;
   assert.equal(view.name, "Casa do Rio");
   assert.equal(view.price, "4 nights · €480");
   assert.deepEqual(view.details, ["Rua da Prata 10, Lisbon", "4★", "8.6 / 10", "Free cancellation"]);
@@ -91,8 +91,8 @@ test("describes the hotel without inventing its hours", () => {
   assert.equal(view.sample, false);
 
   const plain = { ...hotel(), area: "", stars: null, rating: null, freeCancellation: false };
-  assert.deepEqual(toItineraryView({ ...trip(), hotel: plain }, options).hotel.details, ["Lisbon"]);
-  assert.equal(toItineraryView(trip(), { ...options, sample: true }).hotel.sample, true);
+  assert.deepEqual(toItineraryView({ ...trip(), hotel: plain }, options).hotel?.details, ["Lisbon"]);
+  assert.equal(toItineraryView(trip(), { ...options, sample: true }).hotel?.sample, true);
 });
 
 test("adds up the budget", () => {
@@ -125,8 +125,21 @@ test("doesn't pretend a one-way trip has a known length", () => {
   assert.equal(view.flight.title, "Flight");
   assert.equal(view.flight.price, "€412.50 · one way");
   assert.equal(view.flight.legs.length, 1);
-  assert.equal(view.hotel.price, "€120 a night");
+  assert.equal(view.hotel?.price, "€120 a night");
   assert.equal(view.budget, null);
+});
+
+test("leaves the hotel out of a trip without one", () => {
+  const view = toItineraryView({ ...trip(), hotel: null }, options);
+  assert.equal(view.hotel, null);
+  assert.equal(view.overview.description, "4 nights in Lisbon, flying Scandinavian Airlines from Copenhagen. No hotel booked yet.");
+  assert.deepEqual(view.overview.chips, ["5 days", "4 nights", "1 traveller"]);
+  assert.deepEqual(view.overview.image, { photoUrl: null, scene: "island" });
+  assert.deepEqual(view.budget?.lines, [{ label: "Flights", amount: 412.5, color: "bg-iris" }]);
+
+  const oneWayAlone = toItineraryView({ ...oneWay(), hotel: null }, options);
+  assert.deepEqual(oneWayAlone.overview.chips, ["One way", "1 traveller"]);
+  assert.deepEqual(oneWayAlone.budget?.lines, [{ label: "Flights", amount: 412.5, color: "bg-iris" }]);
 });
 
 test("counts travellers", () => {

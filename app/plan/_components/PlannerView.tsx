@@ -159,6 +159,7 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
   const [selectedFlight, setSelectedFlight] = useState<FlightOffer | null>(null);
   const [savingFlightId, setSavingFlightId] = useState<string | null>(null);
   const [selectedHotel, setSelectedHotel] = useState<Hotel | null>(null);
+  const [skipHotel, setSkipHotel] = useState(false);
   const [tripReady, setTripReady] = useState(false);
   const [tab, setTab] = useState<PlannerTab>("chat");
   const router = useRouter();
@@ -185,6 +186,7 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
     setHotelSearch(null);
     setSelectedFlight(null);
     setSelectedHotel(null);
+    setSkipHotel(false);
     setTripReady(false);
     setFlightSort("best");
     setVisibleFlights(FLIGHTS_PAGE_SIZE);
@@ -316,7 +318,10 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
     runSearch(text);
   }
 
-  function tripMessage(flight: FlightOffer, hotel: Hotel, { nights, nightsAssumed }: StreamHotels["stay"]) {
+  function tripMessage(flight: FlightOffer, hotel: Hotel | null, { nights, nightsAssumed }: StreamHotels["stay"]) {
+    if (!hotel) {
+      return `Your trip is taking shape: **${flight.airline.name}** for ${formatPrice(flight.totalPrice, flight.currency)}, without a hotel.`;
+    }
     const stayCost = hotel.nightlyPrice * nights;
     const flightPrice = formatPrice(flight.totalPrice, flight.currency);
     if (nightsAssumed) {
@@ -335,11 +340,12 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
         return;
       }
       setSelectedFlight(offer);
-      if (selectedHotel && stay) setTripReady(true);
+      const hotelChosen = Boolean(stay && (selectedHotel || skipHotel));
+      if (hotelChosen) setTripReady(true);
       const picked =`Good pick! **${offer.airline.name}** ${offer.flightNumber} is ${formatPrice(offer.totalPrice, offer.currency)}. Sign in if you want to save it to your trips.`;
       addMessage(
         "assistant",
-        selectedHotel && stay ? `${picked}\n${tripMessage(offer, selectedHotel, stay)}` : `${picked} Now choose where to stay.`,
+        hotelChosen && stay ? `${picked}\n${tripMessage(offer, selectedHotel, stay)}` : `${picked} Now choose where to stay, or go on without a hotel.`,
       );
       return;
     }
@@ -354,11 +360,12 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
       if (selectedFlight?.id === offer.id) setSelectedFlight(null);
     } else if (outcome.status === "saved") {
       setSelectedFlight(offer);
-      if (selectedHotel && stay) setTripReady(true);
+      const hotelChosen = Boolean(stay && (selectedHotel || skipHotel));
+      if (hotelChosen) setTripReady(true);
       const saved =`Saved! **${offer.airline.name}** ${offer.flightNumber} at ${formatPrice(offer.totalPrice, offer.currency)} is in your saved trips.`;
       addMessage(
         "assistant",
-        selectedHotel && stay ? `${saved}\n${tripMessage(offer, selectedHotel, stay)}` : `${saved} Now choose where to stay.`,
+        hotelChosen && stay ? `${saved}\n${tripMessage(offer, selectedHotel, stay)}` : `${saved} Now choose where to stay, or go on without a hotel.`,
       );
     }
   }
@@ -370,6 +377,7 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
       return;
     }
     setSelectedHotel(hotel);
+    setSkipHotel(false);
     if (selectedFlight) setTripReady(true);
     const cost = stay.nightsAssumed
       ? `${formatPrice(hotel.nightlyPrice, hotel.currency)} a night`
@@ -380,6 +388,22 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
         ? tripMessage(selectedFlight, hotel, stay)
         : `Lovely choice! **${hotel.name}** is ${cost}. Want to pick a flight to go with it?`,
     );
+  }
+
+  function toggleSkipHotel() {
+    if (!stay) return;
+    if (skipHotel) {
+      setSkipHotel(false);
+      return;
+    }
+    setSelectedHotel(null);
+    setSkipHotel(true);
+    if (selectedFlight) {
+      setTripReady(true);
+      addMessage("assistant", tripMessage(selectedFlight, null, stay));
+    } else {
+      addMessage("assistant", "No hotel, no problem. Pick a flight and I'll put your itinerary together.");
+    }
   }
 
   async function showItinerary(trip: PickedTrip) {
@@ -489,12 +513,32 @@ export default function PlannerView({ initialPrompt, initialDestination }: Props
             onSortChange={setHotelSort}
             selectedId={selectedHotel?.id ?? null}
             onSelect={selectHotel}
+            toolbarExtra={
+              stay && (
+                <button
+                  type="button"
+                  aria-pressed={skipHotel}
+                  onClick={toggleSkipHotel}
+                  className={`rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                    skipHotel
+                      ? "border-ink bg-ink text-white"
+                      : "border-lavender-soft bg-white text-ink hover:border-lavender"
+                  }`}
+                >
+                  {skipHotel ? "Going without a hotel" : "Continue without a hotel"}
+                </button>
+              )
+            }
           />
         </div>
       </div>
 
       <TripReadyDialog
-        trip={tripReady && selectedFlight && selectedHotel && stay ? { flight: selectedFlight, hotel: selectedHotel, stay } : null}
+        trip={
+          tripReady && selectedFlight && stay && (selectedHotel || skipHotel)
+            ? { flight: selectedFlight, hotel: selectedHotel, stay }
+            : null
+        }
         onShowItinerary={showItinerary}
         onClose={() => setTripReady(false)}
       />

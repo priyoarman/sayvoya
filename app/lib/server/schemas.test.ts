@@ -28,9 +28,14 @@ test("accepts the sample hotels the planner shows when a search fails", () => {
   }
 });
 
+test("accepts a trip without a hotel, but only when it says so", () => {
+  assert.equal(pickedTripSchema.parse({ ...trip(), hotel: null }).hotel, null);
+  assert.deepEqual(rejected({ flight: flight(), stay: stay() }), ["hotel"]);
+});
+
 test("drops fields it doesn't know", () => {
   const parsed = pickedTripSchema.parse({ ...trip(), hotel: { ...hotel(), secret: "x" }, extra: 1 });
-  assert.equal("secret" in parsed.hotel, false);
+  assert.equal("secret" in parsed.hotel!, false);
   assert.equal("extra" in parsed, false);
 });
 

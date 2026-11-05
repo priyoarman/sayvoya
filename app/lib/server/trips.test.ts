@@ -43,6 +43,13 @@ test("leaves the total out when it can't be added up", () => {
   assert.equal(inDollars.currency, "EUR");
 });
 
+test("turns a trip without a hotel into a row", () => {
+  const row = toTripRow({ ...trip(), hotel: null });
+  assert.equal(row.hotel, Prisma.JsonNull);
+  assert.equal(row.totalPrice, 412.5);
+  assert.equal(toStoredTrip(storedRow({ hotel: null })).hotel, null);
+});
+
 test("keeps the sample flag", () => {
   assert.equal(toTripRow({ ...trip(), sample: true }).sample, true);
 });

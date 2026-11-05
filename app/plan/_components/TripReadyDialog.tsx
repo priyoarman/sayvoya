@@ -144,12 +144,16 @@ function Summary({ trip, onShowItinerary, onClose }: Props & { trip: PickedTrip 
 
       <div className="mt-5 space-y-3">
         <FlightSummary flight={flight} />
-        <HotelSummary hotel={hotel} stay={stay} />
+        {hotel ? (
+          <HotelSummary hotel={hotel} stay={stay} />
+        ) : (
+          <p className={`${boxClass} text-sm text-ink-muted`}>No hotel for this trip. You can find one later.</p>
+        )}
       </div>
 
       {total !== null && (
         <p className="mt-4 flex items-baseline justify-between gap-3 px-1">
-          <span className="text-[0.9375rem] font-semibold text-ink">Flight and hotel</span>
+          <span className="text-[0.9375rem] font-semibold text-ink">{hotel ? "Flight and hotel" : "Flight"}</span>
           <span className="text-2xl font-bold text-ink">{formatPrice(total, flight.currency)}</span>
         </p>
       )}

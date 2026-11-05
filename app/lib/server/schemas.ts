@@ -161,7 +161,7 @@ const staySchema = z.object({
 export const pickedTripSchema = z
   .object({
     flight: flightOfferSchema,
-    hotel: hotelSchema,
+    hotel: hotelSchema.nullable(),
     stay: staySchema,
     sample: z.boolean().optional(),
   })

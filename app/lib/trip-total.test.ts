@@ -14,6 +14,11 @@ test("adds nothing up for a one-way trip, whose nights are a guess", () => {
   assert.equal(tripTotal(flight, hotel, { nights: 1, nightsAssumed: true }), null);
 });
 
+test("counts only the flight when there is no hotel", () => {
+  assert.equal(tripTotal(flight, null, { nights: 3, nightsAssumed: false }), 250);
+  assert.equal(tripTotal(flight, null, { nights: 1, nightsAssumed: true }), 250);
+});
+
 test("adds nothing up across currencies", () => {
   assert.equal(tripTotal(flight, { ...hotel, currency: "GBP" }, { nights: 3, nightsAssumed: false }), null);
 });

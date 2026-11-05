@@ -8,7 +8,7 @@ import {
   formatTime,
 } from "../lib/format.ts";
 import { tripTotal } from "../lib/trip-total.ts";
-import type { FlightSlice, PickedTrip } from "../lib/types";
+import type { FlightSlice, Hotel, PickedTrip } from "../lib/types";
 
 export type Scene = "island" | "temple" | "lake" | "beach";
 
@@ -80,7 +80,7 @@ export type ItineraryView = {
   overview: OverviewView;
   budget: BudgetView | null;
   flight: FlightView;
-  hotel: HotelStayView;
+  hotel: HotelStayView | null;
   calendar: CalendarView;
 };
 
@@ -119,26 +119,32 @@ export function toItineraryView(
   const dates = formatDateRange(stay.checkIn, stay.checkOut);
   const days = stay.nights + 1;
   const travellers = plural(stay.guests, "traveller");
-  const hotelCost = hotel.nightlyPrice * stay.nights;
   const total = tripTotal(flight, hotel, stay);
+  const description = hotel
+    ? roundTrip
+      ? `${formatNights(stay.nights)} in ${city} at ${hotel.name}, flying ${flight.airline.name} from ${originCity}.`
+      : `A one-way flight from ${originCity} with ${flight.airline.name}, and ${formatNights(stay.nights)} at ${hotel.name} to start with.`
+    : roundTrip
+      ? `${formatNights(stay.nights)} in ${city}, flying ${flight.airline.name} from ${originCity}. No hotel booked yet.`
+      : `A one-way flight from ${originCity} to ${city} with ${flight.airline.name}. No hotel booked yet.`;
 
   return {
     summary: roundTrip ? [title, plural(days, "day"), dates] : [title, "One way", formatDate(stay.checkIn)],
     overview: {
       title,
       airportCode: destination,
-      description: roundTrip
-        ? `${formatNights(stay.nights)} in ${city} at ${hotel.name}, flying ${flight.airline.name} from ${originCity}.`
-        : `A one-way flight from ${originCity} with ${flight.airline.name}, and ${formatNights(stay.nights)} at ${hotel.name} to start with.`,
+      description,
       chips: roundTrip
         ? [plural(days, "day"), formatNights(stay.nights), travellers]
-        : ["One way", `${formatNights(stay.nights)} at the hotel`, travellers],
+        : hotel
+          ? ["One way", `${formatNights(stay.nights)} at the hotel`, travellers]
+          : ["One way", travellers],
       facts: [
         { label: "Dates", value: roundTrip ? dates : `From ${formatDate(stay.checkIn)}` },
         { label: "Route", value: `${flight.outbound.origin} ${roundTrip ? "⇄" : "→"} ${destination}` },
         { label: "Stay", value: city },
       ],
-      image: { photoUrl: hotel.photoUrl, scene: "island" },
+      image: { photoUrl: hotel?.photoUrl ?? null, scene: "island" },
     },
     budget:
       total === null
@@ -148,7 +154,7 @@ export function toItineraryView(
             days,
             lines: [
               { label: "Flights", amount: flight.totalPrice, color: "bg-iris" },
-              { label: "Hotel", amount: hotelCost, color: "bg-lavender" },
+              ...(hotel ? [{ label: "Hotel", amount: hotel.nightlyPrice * stay.nights, color: "bg-lavender" }] : []),
             ],
           },
     flight: {
@@ -159,22 +165,27 @@ export function toItineraryView(
         ...(flight.inbound ? [legView("Return", flight.inbound, cityOf)] : []),
       ],
     },
-    hotel: {
-      name: hotel.name,
-      price: stay.nightsAssumed
-        ? `${formatPrice(hotel.nightlyPrice, hotel.currency)} a night`
-        : `${formatNights(stay.nights)} · ${formatPrice(hotelCost, hotel.currency)}`,
-      details: [
-        hotel.area || city,
-        hotel.stars ? `${hotel.stars}★` : null,
-        hotel.rating !== null ? `${hotel.rating} / 10` : null,
-        hotel.freeCancellation ? "Free cancellation" : null,
-      ].filter((detail): detail is string => detail !== null),
-      checkIn: { date: formatDate(stay.checkIn), time: null },
-      checkOut: { date: formatDate(stay.checkOut), time: null },
-      image: { photoUrl: hotel.photoUrl, scene: "island" },
-      sample,
-    },
+    hotel: hotel && hotelView(hotel, stay, city, sample),
     calendar: { start: stay.checkIn, end: stay.checkOut, today, activityDates: [] },
+  };
+}
+
+function hotelView(hotel: Hotel, stay: PickedTrip["stay"], city: string, sample: boolean): HotelStayView {
+  const hotelCost = hotel.nightlyPrice * stay.nights;
+  return {
+    name: hotel.name,
+    price: stay.nightsAssumed
+      ? `${formatPrice(hotel.nightlyPrice, hotel.currency)} a night`
+      : `${formatNights(stay.nights)} · ${formatPrice(hotelCost, hotel.currency)}`,
+    details: [
+      hotel.area || city,
+      hotel.stars ? `${hotel.stars}★` : null,
+      hotel.rating !== null ? `${hotel.rating} / 10` : null,
+      hotel.freeCancellation ? "Free cancellation" : null,
+    ].filter((detail): detail is string => detail !== null),
+    checkIn: { date: formatDate(stay.checkIn), time: null },
+    checkOut: { date: formatDate(stay.checkOut), time: null },
+    image: { photoUrl: hotel.photoUrl, scene: "island" },
+    sample,
   };
 }

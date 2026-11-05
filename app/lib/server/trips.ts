@@ -1,4 +1,4 @@
-import type { Prisma, Trip } from "@prisma/client";
+import { Prisma, type Trip } from "@prisma/client";
 import type { z } from "zod";
 import { tripTotal } from "../trip-total.ts";
 import type { FlightOffer, Hotel } from "../types";
@@ -14,7 +14,7 @@ export type StoredTrip = {
   createdAt: Date;
   savedAt: Date | null;
   flight: FlightOffer;
-  hotel: Hotel;
+  hotel: Hotel | null;
   stay: StreamHotels["stay"];
   sample: boolean;
 };
@@ -44,7 +44,7 @@ const fromDate = (date: Date) => date.toISOString().slice(0, 10);
 export function toTripRow({ flight, hotel, stay, sample }: PickedTripInput) {
   return {
     flight: flight as Prisma.InputJsonObject,
-    hotel: hotel as Prisma.InputJsonObject,
+    hotel: hotel === null ? Prisma.JsonNull : (hotel as Prisma.InputJsonObject),
     stay: stay as Prisma.InputJsonObject,
     origin: flight.outbound.origin,
     destination: flight.outbound.destination,
@@ -64,7 +64,7 @@ export function toStoredTrip(row: Trip): StoredTrip {
     createdAt: row.createdAt,
     savedAt: row.savedAt,
     flight: row.flight as FlightOffer,
-    hotel: row.hotel as Hotel,
+    hotel: row.hotel as Hotel | null,
     stay: row.stay as StreamHotels["stay"],
     sample: row.sample,
   };

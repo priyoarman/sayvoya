@@ -66,7 +66,7 @@ export type Hotel = {
 
 export type PickedTrip = {
   flight: FlightOffer;
-  hotel: Hotel;
+  hotel: Hotel | null;
   stay: StreamHotels["stay"];
 };
 

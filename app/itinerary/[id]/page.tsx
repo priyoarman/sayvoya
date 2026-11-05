@@ -65,7 +65,7 @@ export default async function TripItineraryPage(props: PageProps<"/itinerary/[id
 
         <div className="flex min-w-0 flex-col gap-5">
           <ReturnFlightCard flight={view.flight} />
-          <HotelStayCard hotel={view.hotel} />
+          {view.hotel && <HotelStayCard hotel={view.hotel} />}
         </div>
 
         <div className="flex min-w-0 flex-col gap-5 lg:col-span-2 xl:col-span-1">
